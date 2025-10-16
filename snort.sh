@@ -1,0 +1,12 @@
+sudo /usr/local/snort/bin/snort -c /usr/local/snort/etc/snort/snort.lua \
+  --daq afpacket \
+  --daq-var mode=inline \
+  --daq-var buffer_size_mb=512 \
+  --daq-var fanout_type=hash \
+  --daq-var fanout_flag=defrag \
+  --daq-var block_size=65536 \
+  --daq-var block_timeout=1000 \
+  --daq-var num_threads=2 \
+  -i enp2s0f2:enp2s0f3 \
+  -Q \
+  -l /var/log/snort
