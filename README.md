@@ -124,39 +124,6 @@ sudo systemctl status kibana
 sudo nano /etc/kibana/kibana.yml
     server.host: 0.0.0.0
 sudo systemctl restart kibana
-
-
-
-curl -X PUT "localhost:9200/_index_template/snort-alerts-template" -H 'Content-Type: application/json' -d'
-{
-  "index_patterns": ["snort-alerts-*"],
-  "priority": 500,
-  "template": {
-    "settings": {
-      "number_of_shards": 1,
-      "number_of_replicas": 0
-    },
-    "mappings": {
-      "dynamic": true,
-      "properties": {
-        "@timestamp": {"type": "date"},
-        "timestamp": {"type": "text"},
-        "pkt_num": {"type": "long"},
-        "proto": {"type": "keyword"},
-        "pkt_gen": {"type": "keyword"},
-        "pkt_len": {"type": "long"},
-        "dir": {"type": "keyword"},
-        "src_ap": {"type": "keyword"},
-        "dst_ap": {"type": "keyword"},
-        "rule": {"type": "keyword"},
-        "action": {"type": "keyword"},
-        "gid": {"type": "long"},
-        "sid": {"type": "long"},
-        "rev": {"type": "long"}
-      }
-    }
-  }
-}'
 ```
 
 # Filebeat
