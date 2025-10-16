@@ -1,5 +1,3 @@
-```bash
-
 # Dated: 15-Oct-2025
 # Ubuntu 24.04.3 LTS
 
@@ -153,5 +151,3 @@ sudo systemctl enable filebeat
 sudo systemctl enable --now filebeat
 sudo systemctl status filebeat
 sudo tail -f /var/log/filebeat/filebeat
-
-```
