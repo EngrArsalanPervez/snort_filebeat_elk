@@ -2,34 +2,20 @@
 
 # ============================== Filebeat inputs ==============================
 filebeat.inputs:
-- type: log
+- type: filestream
+  id: snort-alerts-full
   enabled: true
   paths:
-    - /var/log/snort/alert_json.txt
-  
-  # Parse JSON logs
-  json.keys_under_root: true
-  json.add_error_key: true
-  json.overwrite_keys: true
-  
-  # Add metadata fields
-  fields:
-    log_type: snort
-    log_source: ids
-  fields_under_root: false
-  
-  # Add tags for filtering
-  tags: ["snort", "ids", "security"]
-  
-  # Close inactive files after 5 minutes
-  close_inactive: 5m
-  
-  # Ignore files older than 24 hours
-  ignore_older: 24h
-  
-  # Scan for new files every 10 seconds
-  scan_frequency: 10s
+    - /var/log/snort/alert_full.txt
+  multiline:
+      pattern: '^\[\*\*\]'
+      negate: true
+      match: after
 
+  fields:
+      log_source: "snort"
+      log_format: "alert_full"
+  fields_under_root: true
 # ============================== Filebeat modules ==============================
 filebeat.config.modules:
   path: ${path.config}/modules.d/*.yml
@@ -41,7 +27,7 @@ output.elasticsearch:
   protocol: "http"
   username: "elastic"
   password: "YOUR_PASSWORD_HERE"
-  index: "snort-alerts-%{+yyyy.MM.dd}"
+  index: "snort-alerts-full-%{+yyyy.MM.dd}"
   worker: 1
   bulk_max_size: 50
 
