@@ -1,4 +1,3 @@
-```bash
 ###################### Filebeat Configuration ######################
 
 # ============================== Filebeat inputs ==============================
@@ -83,4 +82,3 @@ logging.files:
 # ============================== X-Pack Monitoring =============================
 # Filebeat can export internal metrics to Elasticsearch
 monitoring.enabled: false
-```
