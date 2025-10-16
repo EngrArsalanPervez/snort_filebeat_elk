@@ -1,0 +1,86 @@
+```bash
+###################### Filebeat Configuration ######################
+
+# ============================== Filebeat inputs ==============================
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/snort/alert_json.txt
+  
+  # Parse JSON logs
+  json.keys_under_root: true
+  json.add_error_key: true
+  json.overwrite_keys: true
+  
+  # Add metadata fields
+  fields:
+    log_type: snort
+    log_source: ids
+  fields_under_root: false
+  
+  # Add tags for filtering
+  tags: ["snort", "ids", "security"]
+  
+  # Close inactive files after 5 minutes
+  close_inactive: 5m
+  
+  # Ignore files older than 24 hours
+  ignore_older: 24h
+  
+  # Scan for new files every 10 seconds
+  scan_frequency: 10s
+
+# ============================== Filebeat modules ==============================
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+# ============================== Elasticsearch Output ==========================
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+  protocol: "http"
+  username: "elastic"
+  password: "YOUR_PASSWORD_HERE"
+  index: "snort-alerts-%{+yyyy.MM.dd}"
+  worker: 1
+  bulk_max_size: 50
+
+# ============================== Index Template ================================
+# Disable ILM if using custom index naming
+setup.ilm.enabled: false
+
+# Configure index template
+setup.template.name: "snort-alerts"
+setup.template.pattern: "snort-alerts-*"
+
+# ============================== Processors ====================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~
+  
+  # Add timestamp
+  - timestamp:
+      field: timestamp
+      layouts:
+        - '2006-01-02T15:04:05.999999999Z07:00'
+        - '2006-01-02T15:04:05Z'
+      test:
+        - '2019-06-22T16:33:51Z'
+
+# ============================== Logging =======================================
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat
+  keepfiles: 7
+  permissions: 0644
+
+# ============================== X-Pack Monitoring =============================
+# Filebeat can export internal metrics to Elasticsearch
+monitoring.enabled: false
+```
