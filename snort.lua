@@ -183,9 +183,77 @@ classifications = default_classifications
 ips =
 {
     -- use this to enable decoder and inspector alerts
-    enable_builtin_rules = true,
+    -- enable_builtin_rules = true,
 
-    include = '/usr/local/snort/etc/snort/rules/local.rules',
+    rules = [[
+    	include $RULE_PATH/../../local.rules
+    	include $RULE_PATH/snort3-app-detect.rules
+        include $RULE_PATH/snort3-browser-chrome.rules
+        include $RULE_PATH/snort3-browser-firefox.rules
+        include $RULE_PATH/snort3-browser-ie.rules
+        include $RULE_PATH/snort3-browser-other.rules
+        include $RULE_PATH/snort3-browser-plugins.rules
+        include $RULE_PATH/snort3-browser-webkit.rules
+        include $RULE_PATH/snort3-content-replace.rules
+        include $RULE_PATH/snort3-exploit-kit.rules
+        include $RULE_PATH/snort3-file-executable.rules
+        include $RULE_PATH/snort3-file-flash.rules
+        include $RULE_PATH/snort3-file-identify.rules
+        include $RULE_PATH/snort3-file-image.rules
+        include $RULE_PATH/snort3-file-java.rules
+        include $RULE_PATH/snort3-file-multimedia.rules
+        include $RULE_PATH/snort3-file-office.rules
+        include $RULE_PATH/snort3-file-other.rules
+        include $RULE_PATH/snort3-file-pdf.rules
+        include $RULE_PATH/snort3-indicator-compromise.rules
+        include $RULE_PATH/snort3-indicator-obfuscation.rules
+        include $RULE_PATH/snort3-indicator-scan.rules
+        include $RULE_PATH/snort3-indicator-shellcode.rules
+        include $RULE_PATH/snort3-malware-backdoor.rules
+        include $RULE_PATH/snort3-malware-cnc.rules
+        include $RULE_PATH/snort3-malware-other.rules
+        include $RULE_PATH/snort3-malware-tools.rules
+        include $RULE_PATH/snort3-netbios.rules
+        include $RULE_PATH/snort3-os-linux.rules
+        include $RULE_PATH/snort3-os-mobile.rules
+        include $RULE_PATH/snort3-os-other.rules
+        include $RULE_PATH/snort3-os-solaris.rules
+        include $RULE_PATH/snort3-os-windows.rules
+        include $RULE_PATH/snort3-policy-multimedia.rules
+        include $RULE_PATH/snort3-policy-other.rules
+        include $RULE_PATH/snort3-policy-social.rules
+        include $RULE_PATH/snort3-policy-spam.rules
+        include $RULE_PATH/snort3-protocol-dns.rules
+        include $RULE_PATH/snort3-protocol-finger.rules
+        include $RULE_PATH/snort3-protocol-ftp.rules
+        include $RULE_PATH/snort3-protocol-icmp.rules
+        include $RULE_PATH/snort3-protocol-imap.rules
+        include $RULE_PATH/snort3-protocol-nntp.rules
+        include $RULE_PATH/snort3-protocol-other.rules
+        include $RULE_PATH/snort3-protocol-pop.rules
+        include $RULE_PATH/snort3-protocol-rpc.rules
+        include $RULE_PATH/snort3-protocol-scada.rules
+        include $RULE_PATH/snort3-protocol-services.rules
+        include $RULE_PATH/snort3-protocol-snmp.rules
+        include $RULE_PATH/snort3-protocol-telnet.rules
+        include $RULE_PATH/snort3-protocol-tftp.rules
+        include $RULE_PATH/snort3-protocol-voip.rules
+        include $RULE_PATH/snort3-pua-adware.rules
+        include $RULE_PATH/snort3-pua-other.rules
+        include $RULE_PATH/snort3-pua-p2p.rules
+        include $RULE_PATH/snort3-pua-toolbars.rules
+        include $RULE_PATH/snort3-server-apache.rules
+        include $RULE_PATH/snort3-server-iis.rules
+        include $RULE_PATH/snort3-server-mail.rules
+        include $RULE_PATH/snort3-server-mssql.rules
+        include $RULE_PATH/snort3-server-mysql.rules
+        include $RULE_PATH/snort3-server-oracle.rules
+        include $RULE_PATH/snort3-server-other.rules
+        include $RULE_PATH/snort3-server-samba.rules
+        include $RULE_PATH/snort3-server-webapp.rules
+        include $RULE_PATH/snort3-sql.rules
+        include $RULE_PATH/snort3-x11.rules
+    ]],
 
     -- use include for rules files; be sure to set your path
     -- note that rules files can include other rules files
@@ -257,8 +325,8 @@ rate_filter =
 --alert_syslog = { }
 --unified2 = { }
 
-alert_json = {
-    file = true,
+alert_full = {
+    file = true
 }
 
 -- packet logging
@@ -278,4 +346,5 @@ alert_json = {
 if ( tweaks ~= nil ) then
     include(tweaks .. '.lua')
 end
+
 
